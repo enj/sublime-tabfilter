@@ -16,7 +16,7 @@ class TabFilterCommand(sublime_plugin.WindowCommand):
 
 	def run(self):
 		"""Shows a quick panel to filter and select tabs from the active window"""
-		
+
 		tabs = []
 		self.window = sublime.active_window()
 		self.views = []
@@ -55,7 +55,11 @@ class TabFilterCommand(sublime_plugin.WindowCommand):
 			if len(name) == 0:
 				name = "untitled"
 
-		entity = tab.Tab(name, is_file)
+		max_size = 200
+		size = min(view.size(), max_size)
+		contents = view.substr(sublime.Region(0, size))
+
+		entity = tab.Tab(name, is_file, contents)
 
 		if self.window.get_view_index(self.window.active_view()) == self.window.get_view_index(view):
 			entity.add_caption("Current File")

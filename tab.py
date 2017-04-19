@@ -6,11 +6,12 @@ import os
 class Tab(object):
 	"""Represent a Sublime tab and the relevant metadata."""
 
-	def __init__(self, name, is_file = False):
+	def __init__(self, name, is_file = False, contents = "<empty>"):
 		"""Initialise the Tab."""
 		self.name = name
 		self.is_file = is_file
 		self.captions = []
+		self.contents = contents
 
 	def add_caption(self, caption):
 		"""Adds the caption to the list of captions for this Tab.
@@ -41,7 +42,10 @@ class Tab(object):
 			if include_path:
 				name = short_name
 
-		details = [name, short_name]
+		details = [self.contents, name, short_name]
+
+		if name == short_name:
+			details.pop()
 
 		if show_captions:
 			details.append(self.get_caption())
